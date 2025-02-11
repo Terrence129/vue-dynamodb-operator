@@ -90,10 +90,10 @@ button:hover {
           <!-- 当 msg 为空时，显示其他学生信息 -->
           <div v-else>
             <p><strong>studentID:</strong> {{ studentInfo.studentID }}</p>
-            <p><strong>name:</strong> {{ studentInfo.name }}</p>
-            <p><strong>age:</strong> {{ studentInfo.age }}</p>
-            <p><strong>gender:</strong> {{ studentInfo.gender }}</p>
-            <p><strong>major:</strong> {{ studentInfo.major }}</p>
+            <p><strong>name:</strong> {{ studentInfo.sName }}</p>
+            <p><strong>age:</strong> {{ studentInfo.Age }}</p>
+            <p><strong>gender:</strong> {{ studentInfo.Gender }}</p>
+            <p><strong>major:</strong> {{ studentInfo.Major }}</p>
           </div>
         </div>
       </div>
@@ -107,6 +107,9 @@ button:hover {
         <input v-model="newStudent.gender" placeholder="gender" />
         <input v-model="newStudent.major" placeholder="major" />
         <button @click="createStudent">Add Student</button>
+        <div v-if="createMsg">
+          <p><strong>msg:</strong> {{ createMsg }}</p>
+        </div>
       </div>
 
       <!-- put -->
@@ -118,6 +121,9 @@ button:hover {
         <input v-model="updatedStudent.gender" placeholder="gender" />
         <input v-model="updatedStudent.major" placeholder="major" />
         <button @click="updateStudent">Update Student Info</button>
+        <div v-if="updateMsg">
+          <p><strong>msg:</strong> {{ updateMsg }}</p>
+        </div>
       </div>
 
       <!-- delete -->
@@ -125,6 +131,9 @@ button:hover {
         <h3>Delete Student</h3>
         <input v-model="deleteID" placeholder="studentID" />
         <button @click="deleteStudent">Delete Student</button>
+        <div v-if="deleteMsg">
+          <p><strong>msg:</strong> {{ deleteMsg }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -145,6 +154,7 @@ export default {
         gender: '',
         major: ''
       },
+      createMsg: null,
       updateID: '',
       updatedStudent: {
         name: '',
@@ -152,7 +162,9 @@ export default {
         gender: '',
         major: ''
       },
-      deleteID: ''
+      updateMsg: null,
+      deleteID: '',
+      deleteMsg: null
     };
   },
   methods: {
@@ -172,9 +184,11 @@ export default {
       api.createStudent(this.newStudent)
           .then(response => {
             console.log('Student created:', response.data);
+            this.createMsg = response.data;
           })
           .catch(error => {
             console.error('Error creating student:', error);
+            this.createMsg = error.data;
           });
     },
     // put
@@ -182,9 +196,11 @@ export default {
       api.updateStudent(this.updateID, this.updatedStudent)
           .then(response => {
             console.log('Student updated:', response.data);
+            this.updateMsg = response.data;
           })
           .catch(error => {
             console.error('Error updating student:', error);
+            this.updateMsg = error.data;
           });
     },
     // delete
@@ -192,9 +208,11 @@ export default {
       api.deleteStudent(this.deleteID)
           .then(response => {
             console.log('Student deleted:', response.data);
+            this.deleteMsg = response.data;
           })
           .catch(error => {
             console.error('Error deleting student:', error);
+            this.deleteMsg = error.data;
           });
     }
   }
