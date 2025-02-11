@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+
+
+<div id="app">
+    {{ message }}
+    <h1>{{web.title1}}</h1>
+    <h1>{{web.url1}}</h1>
+</div>
+
+<script type="module">
+    import { createApp, ref } from './vue.esm-browser.js'
+
+    createApp({
+        setup() {
+            const web = Vue.reactive({
+                title1: "人民万岁",
+                url1: "people.org",
+            })
+
+            const message = ref('Hello vue!')
+            return {
+                message,
+                web
+            }
+        }
+    }).mount('#app')
+</script>
+</body>
+</html>
