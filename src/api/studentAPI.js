@@ -1,9 +1,11 @@
 import axios from 'axios';
 
 // 你的后端接口 URL
-const apiBaseUrl = 'https://azu6dpq5he.execute-api.ap-southeast-2.amazonaws.com/dev/';
+const apiBaseUrl = 'https://azu6dpq5he.execute-api.ap-southeast-2.amazonaws.com/dev';
 
-export const api = {
+const apiUserUrl = 'https://azu6dpq5he.execute-api.ap-southeast-2.amazonaws.com/dev/user';
+
+export const studentAPI = {
     // GET 请求：获取学生信息
     getStudentInfo(studentID) {
         return axios.get(apiBaseUrl, {
@@ -34,5 +36,10 @@ export const api = {
                 studentID: studentID,
             }
         });
+    },
+
+    // GET: 获取所有学生列表
+    queryStudentsList() {
+        return axios.get(apiUserUrl, {})
     }
 };
