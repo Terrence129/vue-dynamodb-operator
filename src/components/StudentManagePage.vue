@@ -1,5 +1,3 @@
-<!-- src/components/StudentManagePage.vue -->
-
 <template>
   <div>
     <div style="text-align: center; width: 100%">
@@ -8,22 +6,21 @@
       <div class="form-group">
         <button @click="goToStudentsList">See all students</button>
       </div>
+
       <!-- get -->
       <div class="form-group">
         <label for="studentID">Please enter studentID:</label>
         <input v-model="studentID" id="studentID" placeholder="studentID" />
         <button @click="getStudentInfo">Get Student Info</button>
+        <div v-if="getMsg">
+          <p><strong>msg:</strong> {{ getMsg }}</p>
+        </div>
         <div v-if="studentInfo" class="student-info">
-          <div v-if="studentInfo.msg">
-            <p><strong>msg:</strong> {{ studentInfo.msg }}</p>
-          </div>
-          <div v-else>
-            <p><strong>studentID:</strong> {{ studentInfo.studentID }}</p>
-            <p><strong>name:</strong> {{ studentInfo.sName }}</p>
-            <p><strong>age:</strong> {{ studentInfo.Age }}</p>
-            <p><strong>gender:</strong> {{ studentInfo.Gender }}</p>
-            <p><strong>major:</strong> {{ studentInfo.Major }}</p>
-          </div>
+          <p><strong>studentID:</strong> {{ studentInfo.studentID }}</p>
+          <p><strong>name:</strong> {{ studentInfo.sName }}</p>
+          <p><strong>age:</strong> {{ studentInfo.Age }}</p>
+          <p><strong>gender:</strong> {{ studentInfo.Gender }}</p>
+          <p><strong>major:</strong> {{ studentInfo.Major }}</p>
         </div>
       </div>
 
@@ -69,11 +66,12 @@
 </template>
 
 <script>
-import { studentAPI } from '../api/studentAPI.js';
+import { studentService } from '../api/studentAPI.js';
 
 export default {
   data() {
     return {
+      getMsg: '',
       studentID: '',
       studentInfo: null,
       newStudent: {
@@ -103,53 +101,70 @@ export default {
     goToStudentsList() {
       this.$router.push('/students/list');  // 跳转到学生列表页面
     },
+
     getStudentInfo() {
+      this.studentInfo = null;
       if (!this.studentID) {
-        this.studentInfo= {msg: "You must enter studentID"};
-      }else {
-        studentAPI.getStudentInfo(this.studentID)
+        this.getMsg = "You must enter studentID";
+        return;
+      }
+
+      studentService.getStudentInfo(this.studentID)
           .then(response => {
             console.log(response.data);
-            this.studentInfo = JSON.parse(response.data);
+            this.studentInfo = response.data;
           })
           .catch(error => {
             console.error('Error fetching student info:', error);
+            this.getMsg = this.processError(error);
           });
-      }
-
     },
+
     createStudent() {
-      studentAPI.createStudent(this.newStudent)
+      studentService.createStudent(this.newStudent)
           .then(response => {
             console.log('Student created:', response.data);
             this.createMsg = response.data;
           })
           .catch(error => {
             console.error('Error creating student:', error);
-            this.createMsg = error.data;
+            this.createMsg = this.processError(error);
           });
     },
+
     updateStudent() {
-      studentAPI.updateStudent(this.updateID, this.updatedStudent)
+      studentService.updateStudent(this.updateID, this.updatedStudent)
           .then(response => {
             console.log('Student updated:', response.data);
             this.updateMsg = response.data;
           })
           .catch(error => {
             console.error('Error updating student:', error);
-            this.updateMsg = error.data;
+            this.updateMsg = this.processError(error);
           });
     },
+
     deleteStudent() {
-      studentAPI.deleteStudent(this.deleteID)
+      studentService.deleteStudent(this.deleteID)
           .then(response => {
             console.log('Student deleted:', response.data);
             this.deleteMsg = response.data;
           })
           .catch(error => {
             console.error('Error deleting student:', error);
-            this.deleteMsg = error.data;
+            this.deleteMsg = this.processError(error);
           });
+    },
+
+    // 🔥 统一错误处理
+    processError(error) {
+      if (error.response) {
+        return error.response.data ? error.response.data.message || error.response.data : "Server returned an error.";
+      } else if (error.request) {
+        return "No response from server. Please check your network.";
+      } else {
+        return "Request error: " + error.message;
+      }
     }
   }
 };

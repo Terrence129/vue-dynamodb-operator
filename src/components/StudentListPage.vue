@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import {studentAPI} from "@/api/studentAPI.js";
+import {studentService} from "@/api/studentAPI.js";
 
 export default {
   name: 'StudentListPage',
@@ -41,10 +41,10 @@ export default {
     },
 
     fetchStudentList() {
-      studentAPI.queryStudentsList()
+      studentService.queryStudentsList()
         .then(response => {
         console.log("Query list successfully: " + response.data);
-        this.students = JSON.parse(response.data);
+        this.students = response.data;
           // 按照 studentID 升序排列
         this.students.sort((a, b) => {
           return a.studentID.localeCompare(b.studentID);  // 按字典顺序比较
@@ -53,8 +53,19 @@ export default {
       })
       .catch(error => {
         console.error('Error fetching student list:', error);
-        this.msg = error.data;
+        this.msg = this.processError(error);
       })
+    },
+
+    // 🔥 统一错误处理
+    processError(error) {
+      if (error.response) {
+        return error.response.data ? error.response.data.message || error.response.data : "Server returned an error.";
+      } else if (error.request) {
+        return "No response from server. Please check your network.";
+      } else {
+        return "Request error: " + error.message;
+      }
     }
   }
 };
