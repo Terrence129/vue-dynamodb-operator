@@ -4,7 +4,7 @@ export const attachTokenInterceptor = (axiosInstance) => {
         const token = localStorage.getItem("token"); // 获取 Token
         console.log("拦截器");
         if (token) {
-            config.headers["Authorization"] = token; // 自动添加 `Authorization`
+            config.headers["Authorization"] = token; // 添加 Authorization
         }
         return config;
     }, error => {

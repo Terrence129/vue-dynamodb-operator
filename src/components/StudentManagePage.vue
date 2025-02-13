@@ -105,6 +105,7 @@ export default {
 
     getStudentInfo() {
       this.studentInfo = null;
+      this.getMsg = "Searching..."
       if (!this.studentID) {
         this.getMsg = "You must enter studentID";
         return;
@@ -113,6 +114,7 @@ export default {
       studentService.getStudentInfo(this.studentID)
           .then(response => {
             console.log(response.data);
+            this.getMsg = "";
             this.studentInfo = response.data;
           })
           .catch(error => {
@@ -122,9 +124,11 @@ export default {
     },
 
     createStudent() {
+      this.createMsg = "Creating...";
       studentService.createStudent(this.newStudent)
           .then(response => {
             console.log('Student created:', response.data);
+            this.createMsg = "";
             this.createMsg = response.data;
           })
           .catch(error => {
@@ -134,6 +138,7 @@ export default {
     },
 
     updateStudent() {
+      this.updateMsg = "Updating...";
       studentService.updateStudent(this.updateID, this.updatedStudent)
           .then(response => {
             console.log('Student updated:', response.data);
@@ -146,6 +151,7 @@ export default {
     },
 
     deleteStudent() {
+      this.deleteMsg = "Deleting...";
       studentService.deleteStudent(this.deleteID)
           .then(response => {
             console.log('Student deleted:', response.data);
