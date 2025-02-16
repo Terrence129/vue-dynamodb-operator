@@ -14,5 +14,16 @@ export const utils = {
     // 返回上一页
     goBack() {
         window.history.back();
+    },
+
+    // 统一错误处理
+    processError(error) {
+        if (error.response) {
+            return error.response.data ? error.response.data.message || error.response.data : "Server returned an error.";
+        } else if (error.request) {
+            return "No response from server. Please check your network.";
+        } else {
+            return "Request error: " + error.message;
+        }
     }
 };

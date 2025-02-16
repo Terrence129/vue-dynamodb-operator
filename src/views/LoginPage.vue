@@ -38,8 +38,9 @@ export default {
             this.loginMsg = 'Login successful!';
             console.log(response.data.token);
             localStorage.setItem('token', response.data.token);
+            localStorage.setItem('currentUser', this.cred.username);
             // Redirect to the student page after login success
-            this.$router.push('/students');
+            this.$router.push('/welcome');
           })
           .catch(error => {
             console.error('Login failed:', error);
@@ -47,16 +48,6 @@ export default {
           });
     },
 
-    // 🔥 统一错误处理
-    processError(error) {
-      if (error.response) {
-        return error.response.data ? error.response.data.message || error.response.data : "Server returned an error.";
-      } else if (error.request) {
-        return "No response from server. Please check your network.";
-      } else {
-        return "Request error: " + error.message;
-      }
-    }
   }
 };
 </script>

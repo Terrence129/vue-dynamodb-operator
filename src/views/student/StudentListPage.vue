@@ -1,7 +1,6 @@
 <template>
   <div class="student-list-page">
     <h1 class="page-title">Students List</h1>
-    <button @click="goBack()" class="fixed-button">Back</button>
     <div class="student-list">
       <p><strong>msg:</strong>{{msg}}</p>
       <!-- 使用 v-for 渲染学生列表 -->
@@ -36,10 +35,6 @@ export default {
     this.fetchStudentList();
   },
   methods: {
-    goBack() {
-      window.history.back();
-    },
-
     fetchStudentList() {
       studentService.queryStudentsList()
         .then(response => {
