@@ -7,6 +7,7 @@ import StudentDeletePage from "../views/student/StudentDeletePage.vue";
 import StudentListPage from '../views/student/StudentListPage.vue';
 import Home from "../Home.vue";
 import StudentUpdatePage from "../views/student/StudentUpdatePage.vue";
+import AnalysisPage from "../views/monitor/DataAnalysis.vue"
 
 const routes = [
     { path: '/', component: LoginPage, meta: { noLayout: true } },
@@ -17,6 +18,7 @@ const routes = [
     { path: '/student/update', component: StudentUpdatePage },
     { path: '/student/delete', component: StudentDeletePage },
     { path: '/student/list', component: StudentListPage },
+    { path: '/analysis', component: AnalysisPage },
 ];
 
 const router = createRouter({

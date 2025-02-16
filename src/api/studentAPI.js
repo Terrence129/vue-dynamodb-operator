@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { studentAPI } from './axiosInstances';
 
 

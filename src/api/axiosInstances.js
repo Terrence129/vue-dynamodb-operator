@@ -14,7 +14,14 @@ export const studentAPI = axios.create({
     headers: { "Content-Type": "application/json" }
 });
 
+// userAnalytic 专用
+export const analyticAPI = axios.create({
+    baseURL: "https://clcf734v7f.execute-api.ap-southeast-2.amazonaws.com/dev",
+    headers: { "Content-Type": "application/json" }
+})
+
 
 // ✅ 给所有 API 添加 `Authorization` 拦截器
 // attachTokenInterceptor(authAPI);
 attachTokenInterceptor(studentAPI);
+attachTokenInterceptor(analyticAPI);
