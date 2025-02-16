@@ -39,6 +39,7 @@ export default {
             console.log(response.data.token);
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('currentUser', this.cred.username);
+            console.log("getCurrentUser: " + localStorage.getItem('currentUser'));
             // Redirect to the student page after login success
             this.$router.push('/welcome');
           })

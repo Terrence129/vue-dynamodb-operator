@@ -2,6 +2,7 @@
   <div class="dashboard">
     <!-- Statistic Cards -->
     <div class="stats-cards">
+      <h1>{{ msg }}</h1>
       <div class="card">
         <h3>Total Visits</h3>
         <p>{{ analytics.totalVisits }}</p>
@@ -43,6 +44,7 @@ import Chart from "chart.js/auto";
 import { analyticService } from "@/api/userAnalyticAPI.js";
 
 export default {
+
   setup() {
     const analytics = ref({
       totalVisits: 0,
@@ -54,12 +56,16 @@ export default {
       dailyVisits: {}
     });
 
+    const msg = ref(null);
+
     // Fetch analytics data
     const fetchAnalytics = async () => {
+      msg.value = "Loading...";
       try {
         const response = await analyticService.analyticUserActivities();
         console.log(response);
         if (!response) {
+          msg.value = "Response is null";
           return "Response is null";
         }
         const data = await response.data;
@@ -76,7 +82,9 @@ export default {
         };
 
         updateCharts();
+        msg.value = null;
       } catch (error) {
+        msg.value = "Error fetching data";
         console.error("Error fetching analytics data:", error);
       }
     };
@@ -150,7 +158,7 @@ export default {
       // setInterval(fetchAnalytics, 10000); // Refresh data every 10 seconds
     });
 
-    return { analytics, fetchAnalytics };
+    return { analytics, msg, fetchAnalytics };
   }
 };
 </script>
