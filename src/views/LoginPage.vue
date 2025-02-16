@@ -4,8 +4,8 @@
     <div style="text-align: center;">
       <h1>Login</h1>
       <div class="form-group">
-        <input v-model="cred.username" placeholder="Username" />
-        <input v-model="cred.password" type="password" placeholder="Password" />
+        <input v-model="cred.username" placeholder="Username(admin)" />
+        <input v-model="cred.password" type="password" placeholder="Password(123)" />
         <button @click="login">Login</button>
         <div v-if="loginMsg">
           <p><strong>{{ loginMsg }}</strong></p>
@@ -31,7 +31,6 @@ export default {
   methods: {
     login() {
       this.loginMsg = "Logging in...";
-      console.log("credentials: ", this.cred);
       authService.login(this.cred)
           .then(response => {
             console.log(response);
