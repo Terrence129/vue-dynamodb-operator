@@ -31,6 +31,6 @@ export const studentService = {
     },
 
     queryStudentsList(){
-        return studentAPI.get("/user");
+        return studentAPI.get("/list");
     }
 };

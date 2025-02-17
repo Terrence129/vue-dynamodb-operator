@@ -3,6 +3,6 @@ import { authAPI } from './axiosInstances';
 
 export const authService = {
     login(credentials) {
-        return authAPI.post("/login", credentials);
+        return authAPI.post("/", credentials);
     },
 };

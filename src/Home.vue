@@ -125,12 +125,11 @@ export default {
           .catch(error => console.error("Error tracking user activity:", error));
     };
 
-    // **监听路由变化，每次用户跳转页面时自动触发 trackUserActivity**
+    // 监听路由变化，自动触发 trackUserActivity
     watch(route, () => {
       trackUserActivity(); // 自动收集数据
     });
 
-    // // **页面加载时也收集一次数据**
     // onMounted(() => {
     //   trackUserActivity();
     // });

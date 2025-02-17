@@ -30,6 +30,7 @@ export default {
   },
   methods: {
     login() {
+      console.log(this.cred);
       this.loginMsg = "Logging in...";
       authService.login(this.cred)
           .then(response => {

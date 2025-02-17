@@ -5,6 +5,6 @@ export const analyticService = {
         return analyticAPI.post("/collect", userData);
     },
     analyticUserActivities(){
-        return analyticAPI.get("/analytic");
+        return analyticAPI.get("/report");
     }
 }
