@@ -102,40 +102,40 @@ export default {
     },
 
   },
-  setup() {
-    const route = useRoute(); // 获取当前路由信息
-
-    // 用户数据收集函数
-    const trackUserActivity = () => {
-      const userData = {
-        time: new Date().toISOString(),
-        userAgent: navigator.userAgent,
-        platform: navigator.platform,
-        screenWidth: window.innerWidth,
-        screenHeight: window.innerHeight,
-        url: route.path,
-      };
-
-      console.log("Sending user data:", userData);
-
-      analyticService.collectUserData(userData)
-          .then(response => {
-            console.log(response.data);
-          })
-          .catch(error => console.error("Error tracking user activity:", error));
-    };
-
-    // 监听路由变化，自动触发 trackUserActivity
-    watch(route, () => {
-      trackUserActivity(); // 自动收集数据
-    });
-
-    // onMounted(() => {
-    //   trackUserActivity();
-    // });
-
-    return {};
-  }
+  // setup() {
+  //   const route = useRoute(); // 获取当前路由信息
+  //
+  //   // 用户数据收集函数
+  //   const trackUserActivity = () => {
+  //     const userData = {
+  //       time: new Date().toISOString(),
+  //       userAgent: navigator.userAgent,
+  //       platform: navigator.platform,
+  //       screenWidth: window.innerWidth,
+  //       screenHeight: window.innerHeight,
+  //       url: route.path,
+  //     };
+  //
+  //     console.log("Sending user data:", userData);
+  //
+  //     analyticService.collectUserData(userData)
+  //         .then(response => {
+  //           console.log(response.data);
+  //         })
+  //         .catch(error => console.error("Error tracking user activity:", error));
+  //   };
+  //
+  //   // 监听路由变化，自动触发 trackUserActivity
+  //   watch(route, () => {
+  //     trackUserActivity(); // 自动收集数据
+  //   });
+  //
+  //   // onMounted(() => {
+  //   //   trackUserActivity();
+  //   // });
+  //
+  //   return {};
+  // }
 
 };
 </script>

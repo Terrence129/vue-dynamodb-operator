@@ -6,5 +6,8 @@ export const analyticService = {
     },
     analyticUserActivities(){
         return analyticAPI.get("/report");
+    },
+    analyticUserActivitiesByCloudFront(){
+        return analyticAPI.get("/report/cloudFront");
     }
 }

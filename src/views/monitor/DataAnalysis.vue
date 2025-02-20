@@ -44,7 +44,6 @@ import Chart from "chart.js/auto";
 import { analyticService } from "@/api/userAnalyticAPI.js";
 
 export default {
-
   setup() {
     const analytics = ref({
       totalVisits: 0,
@@ -58,40 +57,28 @@ export default {
 
     const msg = ref(null);
 
-    // Fetch analytics data
     const fetchAnalytics = async () => {
       msg.value = "Loading...";
       try {
-        const response = await analyticService.analyticUserActivities();
+        const response = await analyticService.analyticUserActivitiesByCloudFront();
         console.log(response);
-        if (!response) {
-          msg.value = "Response is null";
-          return "Response is null";
+        if (!response || response.status !== 200) {
+          msg.value = "Error fetching data1";
+          return;
         }
-        const data = await response.data;
 
-        // Ensure data format is correct
-        analytics.value = data || {
-          totalVisits: 0,
-          deviceUsage: {},
-          last24HoursVisits: 0,
-          lastHourVisits: 0,
-          uniqueUsers: 0,
-          pageVisits: {},
-          dailyVisits: {}
-        };
-
+        const data = response.data;
+        analytics.value = data;
         updateCharts();
         msg.value = null;
       } catch (error) {
-        msg.value = "Error fetching data";
+        msg.value = "Error fetching data2";
         console.error("Error fetching analytics data:", error);
       }
     };
 
     let deviceChart, dailyChart, pageChart;
 
-    // Render charts
     const updateCharts = () => {
       if (deviceChart) deviceChart.destroy();
       if (dailyChart) dailyChart.destroy();
@@ -102,37 +89,29 @@ export default {
         type: "pie",
         data: {
           labels: Object.keys(analytics.value.deviceUsage),
-          datasets: [
-            {
-              label: "Device Usage",
-              data: Object.values(analytics.value.deviceUsage),
-              backgroundColor: ["#f87171", "#60a5fa", "#34d399", "#fbbf24"]
-            }
-          ]
+          datasets: [{
+            label: "Device Usage",
+            data: Object.values(analytics.value.deviceUsage),
+            backgroundColor: ["#f87171", "#60a5fa", "#34d399", "#fbbf24"]
+          }]
         }
       });
 
       const ctxDaily = document.getElementById("dailyChart").getContext("2d");
-
-      // Sort dates in ascending order
       const sortedDates = Object.keys(analytics.value.dailyVisits).sort((a, b) => new Date(a) - new Date(b));
-
-      // Get corresponding visit data in sorted order
       const sortedVisits = sortedDates.map(date => analytics.value.dailyVisits[date]);
 
       dailyChart = new Chart(ctxDaily, {
         type: "line",
         data: {
-          labels: sortedDates, // Use sorted dates
-          datasets: [
-            {
-              label: "Daily Visits Trend",
-              data: sortedVisits, // Use sorted visit data
-              borderColor: "#3b82f6",
-              backgroundColor: "rgba(59, 130, 246, 0.2)",
-              borderWidth: 2
-            }
-          ]
+          labels: sortedDates,
+          datasets: [{
+            label: "Daily Visits Trend",
+            data: sortedVisits,
+            borderColor: "#3b82f6",
+            backgroundColor: "rgba(59, 130, 246, 0.2)",
+            borderWidth: 2
+          }]
         }
       });
 
@@ -141,21 +120,17 @@ export default {
         type: "bar",
         data: {
           labels: Object.keys(analytics.value.pageVisits),
-          datasets: [
-            {
-              label: "Page Visit Count",
-              data: Object.values(analytics.value.pageVisits),
-              backgroundColor: "#34d399"
-            }
-          ]
+          datasets: [{
+            label: "Page Visit Count",
+            data: Object.values(analytics.value.pageVisits),
+            backgroundColor: "#34d399"
+          }]
         }
       });
     };
 
-    // Initial data fetch
     onMounted(() => {
       fetchAnalytics();
-      // setInterval(fetchAnalytics, 10000); // Refresh data every 10 seconds
     });
 
     return { analytics, msg, fetchAnalytics };
